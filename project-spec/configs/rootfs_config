@@ -367,12 +367,12 @@ CONFIG_mtd-utils=y
 # CONFIG_util-linux-bash-completion is not set
 # CONFIG_util-linux-lscpu is not set
 # CONFIG_util-linux-prlimit is not set
-CONFIG_util-linux-umount=y
+# CONFIG_util-linux-umount is not set
 # CONFIG_util-linux-partx is not set
-CONFIG_util-linux-mkfs=y
+# CONFIG_util-linux-mkfs is not set
 # CONFIG_util-linux-readprofile is not set
 # CONFIG_util-linux-uuidgen is not set
-CONFIG_util-linux-mount=y
+# CONFIG_util-linux-mount is not set
 # CONFIG_util-linux-fdisk is not set
 # CONFIG_util-linux-fsck is not set
 
@@ -953,9 +953,9 @@ CONFIG_pciutils=y
 #
 # make 
 #
-# CONFIG_make is not set
-# CONFIG_make-dbg is not set
-# CONFIG_make-dev is not set
+CONFIG_make=y
+CONFIG_make-dbg=y
+CONFIG_make-dev=y
 
 #
 # mpfr 
@@ -2587,9 +2587,9 @@ CONFIG_packagegroup-core-boot=y
 #
 # packagegroup-core-buildessential 
 #
-# CONFIG_packagegroup-core-buildessential is not set
-# CONFIG_packagegroup-core-buildessential-dev is not set
-# CONFIG_packagegroup-core-buildessential-dbg is not set
+CONFIG_packagegroup-core-buildessential=y
+CONFIG_packagegroup-core-buildessential-dev=y
+CONFIG_packagegroup-core-buildessential-dbg=y
 
 #
 # packagegroup-core-sdk 
@@ -3988,7 +3988,7 @@ CONFIG_dma-proxy=y
 #
 # user packages 
 #
-# CONFIG_cmake is not set
+CONFIG_cmake=y
 
 #
 # PetaLinux RootFS Settings

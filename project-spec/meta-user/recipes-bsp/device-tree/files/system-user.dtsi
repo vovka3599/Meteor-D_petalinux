@@ -3,10 +3,23 @@
 	dma_proxy {
 		compatible = "xlnx,dma_proxy";
 		dmas = <&axi_dma_0 1
-			&axi_dma_1 0>;
-		dma-names = "dma_ltc_rx", "dma_max_tx";
+			&axi_dma_1 0
+			&axi_dma_2 0>;
+		dma-names = "dma_ltc_rx", "dma_max_tx", "dma_bs_tx";
 	};
 };
+
+&spi0 {
+  is-decoded-cs = <0>;
+  num-cs = <1>;
+  status = "okay";
+  spidev@0x00 {
+    compatible = "spidev";
+    spi-max-frequency = <1000000>;
+    reg = <0>;
+  };
+};
+
 
 /* ETH PHY */
 &gem0 {
@@ -35,3 +48,27 @@
 		cpu = <&cpu0>;
 	};
 };
+
+/*
+&amba_pl {
+	axi_quad_spi@41e00000 {
+		bits-per-word = <0x8>;
+		compatible = "xlnx,axi-quad-spi-3.2", "xlnx,xps-spi-2.00.a";
+		fifo-size = <16>;
+		num-cs = <1>;
+		reg = < 0x41e00000 0x10000 >;
+		num-transfer-bits = <0x8>;
+		xlnx,spi-mode = <0>;
+		status = "okay";
+		#address-cells = <0x1>; 
+		#size-cells = <0x0>; 
+		
+		spidev@0 {
+		    compatible = "spidev";
+		    spi-max-frequency = <10000000>;
+		    reg = <0>;
+		};
+	} ;
+};
+*/
+

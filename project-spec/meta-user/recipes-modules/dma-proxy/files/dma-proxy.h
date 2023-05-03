@@ -1,29 +1,7 @@
-/**
- * Copyright (C) 2021 Xilinx, Inc
- *
- * Licensed under the Apache License, Version 2.0 (the "License"). You may
- * not use this file except in compliance with the License. A copy of the
- * License is located at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
- /* This header file is shared between the DMA Proxy test application and the DMA Proxy device driver. It defines the
- * shared interface to allow DMA transfers to be done from user space.
- *
- * A set of channel buffers are created by the driver for the transmit and receive channel. The application may choose
- * to use only a subset of the channel buffers to allow prioritization of transmit vs receive.
- *
- * Note: the buffer in the data structure should be 1st in the channel interface so that the buffer is cached aligned,
- * otherwise there may be issues when using cached memory.
- */
+#ifndef DMA_PROXY_H
+#define DMA_PROXY_H
 
-#define BUFFER_SIZE 1024                    /* must match driver exactly */
+#define BUFFER_SIZE 64*65536                /* must match driver exactly */
 #define BUFFER_COUNT 1						/* driver only */
 
 #define TX_BUFFER_COUNT 	1
@@ -37,12 +15,6 @@
 #define START_XFER 				_IOW('a','e',int32_t*)
 #define XFER 					_IOR('a','f',int32_t*)
 
-#define DT unsigned short
-typedef struct d_buffer{
-    DT x;
-    DT y;
-}d_buffer_t;
-
 typedef struct signal_parameters{
     unsigned int on;
     unsigned int data;
@@ -50,10 +22,10 @@ typedef struct signal_parameters{
 } signal_parameters;
 
 struct dma_proxy_channel_interface {
-    d_buffer_t buffer[BUFFER_SIZE*RX_BUFFER_COUNT];
+    signed char buffer[BUFFER_SIZE*RX_BUFFER_COUNT];
     enum proxy_status { PROXY_NO_ERROR = 0, PROXY_BUSY = 1, PROXY_TIMEOUT = 2, PROXY_ERROR = 3 } status;
     unsigned int length;
 } __attribute__ ((aligned (1024)));		/* 64 byte alignment required for DMA, but 1024 handy for viewing memory */
 
-
+#endif // DMA_PROXY_H
 

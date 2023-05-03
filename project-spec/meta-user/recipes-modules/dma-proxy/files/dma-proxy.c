@@ -188,12 +188,32 @@ static void sync_callback(void *completion)
 
 static void cyclic_callback(void *data) 
 {
-    struct dma_proxy_channel *pchannel_p = data;
+	/*
+	struct dma_proxy_channel *pchannel_p = data;
 	if(pchannel_p->signal_pid) 
 	{
-        if(pchannel_p->task != NULL) 
-            send_sig_info(pchannel_p->sinfo.si_signo, &pchannel_p->sinfo, pchannel_p->task);
-    }
+	  if(pchannel_p->task != NULL) 
+	    send_sig_info(pchannel_p->sinfo.si_signo, &pchannel_p->sinfo, pchannel_p->task);
+	}
+	*/
+    
+	struct dma_proxy_channel* pchannel_p = data;
+	struct task_struct *task;
+
+	if(pchannel_p->signal_pid)
+	{
+		task = pid_task(find_vpid(pchannel_p->signal_pid), PIDTYPE_PID);
+
+		if(task != NULL) 
+		{
+			send_sig_info(pchannel_p->sinfo.si_signo, &pchannel_p->sinfo, task);
+		} 
+		else 
+		{
+			pchannel_p->channel_p->device->device_terminate_all(pchannel_p->channel_p);
+			printk(KERN_INFO "[DMA ioctl] PROXY_DMA_CYCLIC_STOP cause NULL task\n");
+		}
+	}
 }
 
 /* Prepare a DMA buffer to be used in a DMA transaction, submit it to the DMA engine
